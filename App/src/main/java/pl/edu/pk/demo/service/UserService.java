@@ -5,6 +5,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.edu.pk.demo.exceptions.UserAlreadyExistsException;
 import pl.edu.pk.demo.model.Role;
 import pl.edu.pk.demo.model.User;
 import pl.edu.pk.demo.model.UserModel;
@@ -88,6 +89,15 @@ public class UserService {
      * @return saved user model to database
      */
     public User createUser(UserModel userModel){
+        //check if user exists
+        if (repository.existsByUsername(userModel.username())) {
+            throw new UserAlreadyExistsException("Użytkownik o nazwie '" + userModel.username() + "' już istnieje.");
+        }
+
+        // check if email is unique
+        if (repository.existsByEmail(userModel.email())) {
+            throw new UserAlreadyExistsException("Adres email '" + userModel.email() + "' jest już przypisany do innego konta.");
+        }
         User user = new User();
         user.setFirstName(userModel.firstName());
         user.setLastName(userModel.lastName());

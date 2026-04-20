@@ -27,17 +27,4 @@ public class AuthController {
         service.createUser(userModel);
         return ResponseEntity.status(201).body("User created");
     }
-
-    // handler of exceptions e.g. @Valid
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleValidationException(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach(error -> {
-            String fieldName = ((FieldError) error).getField();
-            String message = error.getDefaultMessage();
-            errors.put(fieldName, message);
-        });
-        return errors;
-    }
 }
