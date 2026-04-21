@@ -1,9 +1,9 @@
 version: "3.8"
-
+name: task-manager
 services:
   db:
     image: postgres:16-alpine
-    container_name: Task-Manager-db
+    container_name: db
     ports:
       - "5432:5432"
     environment:

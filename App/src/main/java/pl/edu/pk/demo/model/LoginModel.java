@@ -13,4 +13,14 @@ public record LoginModel(
         @Size(min = 6, max = 255)
         String password
 ) {
+
+    @Override
+    public String username() {
+        return username;
+    }
+
+    @Override
+    public String password() {
+        return password;
+    }
 }

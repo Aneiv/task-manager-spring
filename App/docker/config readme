@@ -1,0 +1,11 @@
+To build and run app you need to create and configure .env file in this folder with necessary parameters
+
+All parameters required in .env for app to run:
+
+POSTGRES_USER=
+DB_URL=
+POSTGRES_PASSWORD=
+PGADMIN_EMAIL=
+PGADMIN_PASSWORD=
+JWT_SECRET_KEY=
+JWT_EXPIRATION=
