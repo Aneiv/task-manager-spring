@@ -93,7 +93,7 @@ public class User implements UserDetails {
     public Role getRole() {        return role;    }
     public void setRole(Role role) {        this.role = role;    }
 
-    // metoda aktualizująca timestamp
+    // updates timestamp
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
