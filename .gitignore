@@ -24,3 +24,4 @@ hs_err_pid*
 replay_pid*
 App/docker/.env
 App/docker/TODO list
+App/Frontend/task-manager-frontend/.env
