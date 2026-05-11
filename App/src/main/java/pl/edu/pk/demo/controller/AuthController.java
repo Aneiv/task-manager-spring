@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.edu.pk.demo.model.LoginModel;
 import pl.edu.pk.demo.model.LoginResponse;
 import pl.edu.pk.demo.model.RegisterModel;
-import pl.edu.pk.demo.model.User;
+import pl.edu.pk.demo.model.entities.User;
 import pl.edu.pk.demo.service.AuthService;
 import pl.edu.pk.demo.service.JwtService;
 

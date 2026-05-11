@@ -1,16 +1,12 @@
 package pl.edu.pk.demo.service;
 
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import pl.edu.pk.demo.exceptions.AlreadyExistsException;
 import pl.edu.pk.demo.exceptions.ResourceNotFoundException;
 import pl.edu.pk.demo.exceptions.UnauthorizedException;
-import pl.edu.pk.demo.model.Category;
+import pl.edu.pk.demo.model.entities.Category;
 import pl.edu.pk.demo.model.CategoryModel;
-import pl.edu.pk.demo.model.User;
+import pl.edu.pk.demo.model.entities.User;
 import pl.edu.pk.demo.repository.CategoryRepository;
 import pl.edu.pk.demo.repository.UserRepository;
 

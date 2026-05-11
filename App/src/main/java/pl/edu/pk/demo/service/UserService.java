@@ -2,10 +2,9 @@ package pl.edu.pk.demo.service;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.edu.pk.demo.model.Role;
-import pl.edu.pk.demo.model.User;
+import pl.edu.pk.demo.model.entities.User;
 import pl.edu.pk.demo.repository.UserRepository;
 
 import java.util.List;

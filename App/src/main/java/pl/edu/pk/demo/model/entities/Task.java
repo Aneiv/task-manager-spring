@@ -1,6 +1,7 @@
-package pl.edu.pk.demo.model;
+package pl.edu.pk.demo.model.entities;
 
 import jakarta.persistence.*;
+import pl.edu.pk.demo.model.Priority;
 
 import java.time.LocalDateTime;
 

@@ -4,9 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pk.demo.exceptions.ResourceNotFoundException;
-import pl.edu.pk.demo.model.Category;
+import pl.edu.pk.demo.model.entities.Category;
 import pl.edu.pk.demo.model.CategoryModel;
-import pl.edu.pk.demo.model.CategoryResponse;
 import pl.edu.pk.demo.model.DTO.CategoryDTO;
 import pl.edu.pk.demo.service.CategoryService;
 

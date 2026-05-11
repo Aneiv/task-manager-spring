@@ -1,7 +1,7 @@
 package pl.edu.pk.demo.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import pl.edu.pk.demo.model.Category;
+import pl.edu.pk.demo.model.entities.Category;
 
 import java.util.List;
 

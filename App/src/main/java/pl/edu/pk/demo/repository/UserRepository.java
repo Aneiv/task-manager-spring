@@ -2,7 +2,7 @@ package pl.edu.pk.demo.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import pl.edu.pk.demo.model.User;
+import pl.edu.pk.demo.model.entities.User;
 
 import java.util.Optional;
 

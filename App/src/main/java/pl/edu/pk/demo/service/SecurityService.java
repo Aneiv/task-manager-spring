@@ -3,7 +3,7 @@ package pl.edu.pk.demo.service;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import pl.edu.pk.demo.model.User;
+import pl.edu.pk.demo.model.entities.User;
 
 @Component
 public class SecurityService {

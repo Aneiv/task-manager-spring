@@ -1,7 +1,7 @@
 package pl.edu.pk.demo.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import pl.edu.pk.demo.model.Task;
+import pl.edu.pk.demo.model.entities.Task;
 
 import java.util.List;
 

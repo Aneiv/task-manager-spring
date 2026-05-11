@@ -1,4 +1,4 @@
-package pl.edu.pk.demo.model;
+package pl.edu.pk.demo.model.entities;
 
 import jakarta.persistence.*;
 

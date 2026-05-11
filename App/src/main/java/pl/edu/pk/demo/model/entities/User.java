@@ -1,10 +1,11 @@
-package pl.edu.pk.demo.model;
+package pl.edu.pk.demo.model.entities;
 
 
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import pl.edu.pk.demo.model.Role;
 
 import java.time.LocalDateTime;
 import java.util.Collection;

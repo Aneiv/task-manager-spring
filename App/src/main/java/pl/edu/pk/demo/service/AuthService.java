@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import pl.edu.pk.demo.exceptions.UserAlreadyExistsException;
 import pl.edu.pk.demo.model.LoginModel;
 import pl.edu.pk.demo.model.RegisterModel;
-import pl.edu.pk.demo.model.User;
+import pl.edu.pk.demo.model.entities.User;
 import pl.edu.pk.demo.repository.UserRepository;
 
 @Service
