@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public record UserModel(
+public record RegisterModel(
     @NotBlank(message = "First name is required")
     @Size(max = 100)
     String firstName,
@@ -25,4 +25,29 @@ public record UserModel(
     @NotBlank(message = "Password is required")
     @Size(min = 6, max = 255)
     String password
-) {}
+) {
+    @Override
+    public String firstName() {
+        return firstName;
+    }
+
+    @Override
+    public String lastName() {
+        return lastName;
+    }
+
+    @Override
+    public String email() {
+        return email;
+    }
+
+    @Override
+    public String username() {
+        return username;
+    }
+
+    @Override
+    public String password() {
+        return password;
+    }
+}

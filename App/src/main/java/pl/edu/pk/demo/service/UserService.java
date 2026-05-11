@@ -2,12 +2,9 @@ package pl.edu.pk.demo.service;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.edu.pk.demo.model.Role;
-import pl.edu.pk.demo.model.User;
-import pl.edu.pk.demo.model.UserModel;
+import pl.edu.pk.demo.model.entities.User;
 import pl.edu.pk.demo.repository.UserRepository;
 
 import java.util.List;
@@ -16,11 +13,9 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository repository;
-    private final BCryptPasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder passEncoder){
+    public UserService(UserRepository userRepository){
         this.repository = userRepository;
-        this.passwordEncoder = passEncoder;
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -82,20 +77,5 @@ public class UserService {
         return true;
     }
 
-    /**
-     * Creates and add to database new User
-     * @param userModel - DTO user model
-     * @return saved user model to database
-     */
-    public User createUser(UserModel userModel){
-        User user = new User();
-        user.setFirstName(userModel.firstName());
-        user.setLastName(userModel.lastName());
-        user.setEmail(userModel.email());
-        user.setUsername(userModel.username());
-        user.setPassword(passwordEncoder.encode(userModel.password()));//password hashing
-
-        return repository.save(user);
-    }
 
 }

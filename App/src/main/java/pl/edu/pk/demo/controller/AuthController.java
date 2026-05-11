@@ -1,43 +1,39 @@
 package pl.edu.pk.demo.controller;
 
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import pl.edu.pk.demo.model.User;
-import pl.edu.pk.demo.model.UserModel;
-import pl.edu.pk.demo.service.UserService;
-
-import java.util.HashMap;
-import java.util.Map;
+import pl.edu.pk.demo.model.LoginModel;
+import pl.edu.pk.demo.model.LoginResponse;
+import pl.edu.pk.demo.model.RegisterModel;
+import pl.edu.pk.demo.model.entities.User;
+import pl.edu.pk.demo.service.AuthService;
+import pl.edu.pk.demo.service.JwtService;
 
 @RestController
 @RequestMapping("api/auth")
 public class AuthController {
-    private final UserService service;
+    private final AuthService service;
+    private final JwtService jwtService;
 
-    public AuthController(UserService userService){
+    public AuthController(AuthService userService, JwtService jwt){
         this.service = userService;
+        this.jwtService = jwt;
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody @Valid UserModel userModel){
-        service.createUser(userModel);
+    @PostMapping("/signup")
+    public ResponseEntity<?> register(@RequestBody @Valid RegisterModel userModel){
+        service.signUp(userModel);
         return ResponseEntity.status(201).body("User created");
     }
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginModel loginUserDto) {
+        User authenticatedUser = service.authenticate(loginUserDto);
 
-    // handler of exceptions e.g. @Valid
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleValidationException(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach(error -> {
-            String fieldName = ((FieldError) error).getField();
-            String message = error.getDefaultMessage();
-            errors.put(fieldName, message);
-        });
-        return errors;
+        String jwtToken = jwtService.generateToken(authenticatedUser);
+
+        LoginResponse loginResponse = new LoginResponse().setToken(jwtToken).setExpiresIn(jwtService.getExpirationTime());
+
+        return ResponseEntity.ok(loginResponse);
     }
 }

@@ -1,12 +1,19 @@
-package pl.edu.pk.demo.model;
+package pl.edu.pk.demo.model.entities;
 
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import pl.edu.pk.demo.model.Role;
+
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,24 +44,46 @@ public class User {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt = LocalDateTime.now();
 
+    // returns user roles list
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
+    }
+
+
     // -------- Gettery i Settery --------
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
     public String getFirstName() { return firstName; }
-    public void setFirstName(String firstName) { this.firstName = firstName; }
+    public User setFirstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
 
     public String getLastName() { return lastName; }
-    public void setLastName(String lastName) { this.lastName = lastName; }
+    public User setLastName(String lastName) {
+        this.lastName = lastName;
+        return this;
+    }
 
     public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public User setEmail(String email) {
+        this.email = email;
+        return this;
+    }
 
     public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
+    public User setUsername(String username) {
+        this.username = username;
+        return this;
+    }
 
     public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
+    public User setPassword(String password) {
+        this.password = password;
+        return this;
+    }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
@@ -65,7 +94,7 @@ public class User {
     public Role getRole() {        return role;    }
     public void setRole(Role role) {        this.role = role;    }
 
-    // metoda aktualizująca timestamp
+    // updates timestamp
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
