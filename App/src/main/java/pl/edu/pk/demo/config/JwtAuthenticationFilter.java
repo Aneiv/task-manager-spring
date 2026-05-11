@@ -50,9 +50,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             // no token
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-                if (!request.getServletPath().startsWith("/api/auth")) {//if path is not public - /auth
-                    throw new UnauthorizedException("Missing or invalid Authorization header");
-                }
                 filterChain.doFilter(request, response);
                 return;
             }
@@ -75,14 +72,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
-
-                    filterChain.doFilter(request, response);
                 } else { //token incorrect
                     throw new UnauthorizedException("Token expired or is incorrect");
                 }
-            } else { //username is null or not logged in
-                filterChain.doFilter(request, response);
             }
+
+            filterChain.doFilter(request, response);
         } catch (Exception exception) {
             resolver.resolveException(request, response, null, exception);
         }

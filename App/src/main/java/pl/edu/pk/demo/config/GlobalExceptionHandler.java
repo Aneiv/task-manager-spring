@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
                         error.getDefaultMessage()
                 ));
         Map<String, Object> response = Map.of(
-                "message", "Błąd walidacji",
+                "message", "Validation error",
                 "errors", errors
         );
         return ResponseEntity.badRequest().body(response);
@@ -43,14 +43,23 @@ public class GlobalExceptionHandler {
                 "error", ex.getMessage()
         ));
     }
-
+    //Error for existing objects
+    @ExceptionHandler(AlreadyExistsException.class)
+    public ResponseEntity<?> handleAlreadyExists(AlreadyExistsException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of(
+                "timestamp", LocalDateTime.now(),
+                "message", "Already exists",
+                "error", ex.getMessage(),
+                "status", HttpStatus.CONFLICT.value()
+        ));
+    }
     //data integrity error
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<?> handleDataIntegrity(DataIntegrityViolationException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of(
                 "timestamp", LocalDateTime.now(),
-                "message", "Błąd spójności danych",
-                "error", "Podany login lub email jest już zajęty w bazie danych."
+                "message", "Data integrity error",
+                "error", "Provided data violates data integrity rules."
         ));
     }
 
