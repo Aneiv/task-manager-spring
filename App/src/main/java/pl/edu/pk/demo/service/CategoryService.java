@@ -73,7 +73,7 @@ public class CategoryService {
         categoryRepository.deleteById(id);
     }
 
-    public List<Category> findAllByUserId(Long userId) {
-        return categoryRepository.findAllByUserId(userId);
+    public List<Category> findAll() {
+        return categoryRepository.findAllByUserId(securityService.getCurrentUserId());
     }
 }

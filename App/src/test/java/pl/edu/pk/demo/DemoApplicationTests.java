@@ -43,9 +43,9 @@ class DemoApplicationTests {
 
         //mock repository behaviour
         when(catRepo.findAllByUserId(userId)).thenReturn(mockOutput);
-
+        when(securityService.getCurrentUserId()).thenReturn(userId);
         // When
-        List<Category> result = catSer.findAllByUserId(userId);
+        List<Category> result = catSer.findAll();
 
         // Then
         assertNotNull(result);

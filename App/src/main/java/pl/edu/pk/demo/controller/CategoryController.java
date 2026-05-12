@@ -28,9 +28,9 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Category created");
     }
     //get
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<CategoryDTO>> getCategoriesByUserId(@PathVariable Long userId) {
-        List<Category> categories = categoryService.findAllByUserId(userId);
+    @GetMapping
+    public ResponseEntity<List<CategoryDTO>> getCategoriesByUserId() {
+        List<Category> categories = categoryService.findAll();
         if(categories.isEmpty()){
             throw new ResourceNotFoundException("No categories found");
         }
