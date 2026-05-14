@@ -27,9 +27,9 @@ INSERT INTO categories (user_id, name) VALUES
 
 -- Tasks
 -- user_id = 1
-INSERT INTO tasks (user_id, title, description, status_id, priority, due_date, created_at, updated_at) VALUES
-(1, 'Raport miesięczny', 'Przygotować zestawienie sprzedaży za kwiecień', 2, 'HIGH', '2026-05-15 12:00:00', NOW(), NOW()),
-(1, 'Zakupy spożywcze', 'Chleb, mleko, jajka', 1, 'MEDIUM', '2026-05-06 18:00:00', NOW(), NOW());
+INSERT INTO tasks (user_id, title, description, status_id, category_id, priority, due_date, created_at, updated_at) VALUES
+(1, 'Raport miesięczny', 'Przygotować zestawienie sprzedaży za kwiecień', 2,1, 'HIGH', '2026-05-15 12:00:00', NOW(), NOW()),
+(1, 'Zakupy spożywcze', 'Chleb, mleko, jajka', 1,2, 'MEDIUM', '2026-05-06 18:00:00', NOW(), NOW());
 -- user_id = 2
-INSERT INTO tasks (user_id, title, description, status_id, priority, due_date, created_at, updated_at) VALUES
-(2, 'Projekt zaliczeniowy', 'Implementacja bazy danych w Pythonie', 1, 'HIGH', '2026-06-01 23:59:59', NOW(), NOW());
+INSERT INTO tasks (user_id, title, description, status_id,category_id, priority, due_date, created_at, updated_at) VALUES
+(2, 'Projekt zaliczeniowy', 'Implementacja bazy danych w Pythonie', 1,3, 'HIGH', '2026-06-01 23:59:59', NOW(), NOW());
