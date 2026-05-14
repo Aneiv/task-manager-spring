@@ -48,57 +48,62 @@ const TaskList: React.FC = () => {
     if (isLoading) return <div className="text-slate-400 animate-pulse">Pobieranie zadań...</div>;
     if (error) return <div className="text-red-400 bg-red-500/10 p-4 rounded-xl">{error}</div>;
     return (
-        <div className="space-y-4">
-            {tasks.map((task) => (
-                <div
-                    key={task.taskId}
-                    onClick={() => setEditingTask(task)}
-                    className="cursor-pointer bg-slate-900 border border-slate-800 p-5 rounded-2xl hover:border-slate-700 transition-all shadow-sm"
-                >
-                    <div className="flex justify-between items-start">
-                        <div className="flex-1">
-                            <div className="flex items-center gap-3 mb-1">
-                                <span
-                                    className="w-2.5 h-2.5 rounded-full"
-                                    style={{ backgroundColor: task.status.color }}
-                                />
-                                <h3 className="text-lg font-bold text-white leading-none">
-                                    {task.title}
-                                </h3>
-                            </div>
-                            <p className="text-slate-400 text-sm text-left ml-2">
-                                {task.description}
-                            </p>
+        <div className="flex flex-col gap-10"> {/* Main task container */}
+            {statuses.map((status) => {
+                // Filter task for certain status
+                const tasksInStatus = tasks.filter(t => t.status.id === status.id);
+
+                return (
+                    <div key={status.id} className="flex flex-col gap-4">
+                        {/* Status header */}
+                        <div className="flex items-center gap-3 pb-2 border-b border-slate-800">
+                            <div
+                                className="w-3 h-3 rounded-full shadow-[0_0_10px_rgba(0,0,0,0.5)]"
+                                style={{ backgroundColor: status.color }}
+                            />
+                            <h2 className="text-sm font-black uppercase tracking-widest text-slate-400">
+                                {status.name}
+                                <span className="ml-2 text-slate-600 font-bold">({tasksInStatus.length})</span>
+                            </h2>
                         </div>
 
-                        <div className="flex flex-col items-end gap-2">
-                            {/* Priority Badge */}
-                            <span className={`px-2 py-1 rounded text-[10px] font-black ${PRIORITY_MAP[task.priority].class}`}>
-                                {PRIORITY_MAP[task.priority].label}
-                            </span>
+                        {/* Task list for that status */}
+                        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                            {tasksInStatus.length > 0 ? (
+                                tasksInStatus.map((task) => (
+                                    <div
+                                        key={task.taskId}
+                                        onClick={() => setEditingTask(task)}
+                                        className="cursor-pointer bg-slate-900 border border-slate-800 p-5 rounded-2xl hover:border-slate-700 transition-all shadow-sm flex flex-col justify-between"
+                                    >
+                                        <div>
+                                            <h3 className="text-lg font-bold text-white mb-2 leading-tight">
+                                                {task.title}
+                                            </h3>
+                                            <p className="text-slate-400 text-sm line-clamp-2">
+                                                {task.description}
+                                            </p>
+                                        </div>
+
+                                        <div className="mt-6 pt-4 border-t border-slate-800/50 flex justify-between items-center">
+                                            <span className={`px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider ${PRIORITY_MAP[task.priority].class}`}>
+                                                {PRIORITY_MAP[task.priority].label}
+                                            </span>
+                                            <div className="text-[10px] text-slate-500 font-medium">
+                                                {new Date(task.dueDate).toLocaleDateString('pl-PL', { day: 'numeric', month: 'short' })}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="text-slate-600 text-xs italic py-2 ml-1">
+                                    Brak zadań w tej kategorii
+                                </div>
+                            )}
                         </div>
                     </div>
-
-                    <div className="mt-6 pt-4 border-t border-slate-800 flex flex-wrap justify-between items-center gap-4">
-                        <div className="flex gap-4 text-xs text-slate-500">
-                            <div className="flex items-center gap-1">
-                                <span className="opacity-60">Termin:</span>
-                                <span className="text-slate-300">
-                                    {new Date(task.dueDate).toLocaleDateString('pl-PL', { day: 'numeric', month: 'short' })}
-                                </span>
-                            </div>
-                        </div>
-
-                        {/* Status style */}
-                        <div
-                            className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-slate-800"
-                            style={{ color: task.status.color }}
-                        >
-                            {task.status.name.toUpperCase()}
-                        </div>
-                    </div>
-                </div>
-            ))}
+                );
+            })}
             {/* EDIT Modal */}
             {editingTask && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
