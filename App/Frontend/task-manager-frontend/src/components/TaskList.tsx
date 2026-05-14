@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTasks, type TaskDTO } from '../hooks/useTasks';
 
 const TaskList: React.FC = () => {
-    const { tasks, isLoading, error, updateTask } = useTasks();
+    const { tasks, statuses, isLoading, error, updateTask } = useTasks();
     const [editingTask, setEditingTask] = useState<TaskDTO | null>(null);
     const handleSave = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -29,6 +29,20 @@ const TaskList: React.FC = () => {
         LOW: { label: 'Normalne', class: 'bg-slate-800 text-slate-400' },
         MEDIUM: { label: 'Ważne', class: 'bg-amber-500/10 text-amber-500' },
         HIGH: { label: 'Bardzo ważne', class: 'bg-red-500/10 text-red-500' },
+    };
+
+
+    const handleStatusChange = (statusId: string) => {
+        if (!editingTask) return;
+
+        const newStatus = statuses.find(s => s.id === parseInt(statusId));
+
+        if (newStatus) {
+            setEditingTask({
+                ...editingTask,
+                status: newStatus
+            });
+        }
     };
 
     if (isLoading) return <div className="text-slate-400 animate-pulse">Pobieranie zadań...</div>;
@@ -123,6 +137,21 @@ const TaskList: React.FC = () => {
                                     </select>
                                 </div>
                                 <div>
+                                    <label className="text-xs text-slate-400 ml-1">Status zadania</label>
+                                    <select
+                                        className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-white outline-none focus:border-emerald-500"
+                                        style={{ borderLeft: `4px solid ${editingTask.status.color}` }}
+                                        value={editingTask.status.id}
+                                        onChange={(e) => handleStatusChange(e.target.value)}
+                                    >
+                                        {statuses.map((s) => (
+                                            <option key={s.id} value={s.id}>
+                                                {s.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="col-span-2">
                                     <label className="text-xs text-slate-400 ml-1">Termin</label>
                                     <input
                                         type="datetime-local"

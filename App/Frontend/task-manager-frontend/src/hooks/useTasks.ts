@@ -40,6 +40,7 @@ export const useTasks = () => {
 
   useEffect(() => {
     fetchTasks();
+    fetchStatuses();
   }, [fetchTasks]);
 
   const updateTask = async (id: number, updatedData: any) => {
@@ -59,5 +60,16 @@ export const useTasks = () => {
     }
   };
 
-  return { tasks, isLoading, error, refetch: fetchTasks, updateTask };
+  const [statuses, setStatuses] = useState<StatusDTO[]>([]);
+
+  const fetchStatuses = useCallback(async () => {
+    try {
+      const response = await api.get<StatusDTO[]>("/status");
+      setStatuses(response.data);
+    } catch (err) {
+      console.error("Błąd pobierania statusów:", err);
+    }
+  }, []);
+
+  return { tasks, statuses, isLoading, error, refetch: fetchTasks, updateTask };
 };
