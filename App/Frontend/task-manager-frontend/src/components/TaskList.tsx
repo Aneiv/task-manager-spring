@@ -2,19 +2,23 @@ import React, { useState } from 'react';
 import { useTasks, type TaskDTO, type Priority } from '../hooks/useTasks';
 
 const TaskList: React.FC = () => {
-    const { tasks, statuses, isLoading, error, updateTask, createTask } = useTasks();
+    const { tasks, statuses, categories, isLoading, error, updateTask, createTask } = useTasks();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [formData, setFormData] = useState({
         id: null as number | null,
         title: '',
         description: '',
         statusId: 1,
+        categoryId: 1,
         priority: 'LOW' as Priority,
         dueDate: ''
     });
 
     const openAddModal = () => {
-        setFormData({ id: null, title: '', description: '', statusId: 1, priority: 'LOW', dueDate: '' });
+        setFormData({
+            id: null, title: '', description: '',
+            statusId: 1, categoryId: 1, priority: 'LOW', dueDate: ''
+        });
         setIsModalOpen(true);
     };
 
@@ -24,6 +28,7 @@ const TaskList: React.FC = () => {
             title: task.title,
             description: task.description,
             statusId: task.status.id,
+            categoryId: task.category.id, //
             priority: task.priority,
             dueDate: task.dueDate.replace(' ', 'T').substring(0, 16)
         });
@@ -109,11 +114,19 @@ const TaskList: React.FC = () => {
                                                 {task.description}
                                             </p>
                                         </div>
-
                                         <div className="mt-6 pt-4 border-t border-slate-800/50 flex justify-between items-center">
-                                            <span className={`px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider ${PRIORITY_MAP[task.priority].class}`}>
-                                                {PRIORITY_MAP[task.priority].label}
-                                            </span>
+                                            <div className="flex gap-2 items-center">
+                                                {/* Priority */}
+                                                <span className={`px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider ${PRIORITY_MAP[task.priority].class}`}>
+                                                    {PRIORITY_MAP[task.priority].label}
+                                                </span>
+
+                                                {/* Category */}
+                                                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-300 border border-slate-700 uppercase">
+                                                    {task.category.name}
+                                                </span>
+                                            </div>
+
                                             <div className="text-[10px] text-slate-500 font-medium">
                                                 {new Date(task.dueDate).toLocaleDateString('pl-PL', { day: 'numeric', month: 'short' })}
                                             </div>
@@ -157,6 +170,20 @@ const TaskList: React.FC = () => {
                                     value={formData.description}
                                     onChange={e => setFormData({ ...formData, description: e.target.value })}
                                 />
+                            </div>
+                            <div>
+                                <label className="text-xs text-slate-400 ml-1">Kategoria</label>
+                                <select
+                                    className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-white outline-none focus:border-emerald-500"
+                                    value={formData.categoryId}
+                                    onChange={e => setFormData({ ...formData, categoryId: parseInt(e.target.value) })}
+                                >
+                                    {categories.map((cat) => (
+                                        <option key={cat.id} value={cat.id}>
+                                            {cat.name}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
 
                             <div className="grid grid-cols-2 gap-4">
