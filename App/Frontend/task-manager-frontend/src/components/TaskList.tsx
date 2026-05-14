@@ -8,18 +8,23 @@ const TaskList: React.FC = () => {
         e.preventDefault();
         if (!editingTask) return;
 
+        let datePart = editingTask.dueDate.replace('T', ' ');
+
+        if (datePart.length === 16) {
+            datePart += ":00";
+        } else if (datePart.length > 19) {
+            datePart = datePart.substring(0, 19);
+        }
+
         const payload = {
-            title: editingTask.title,
-            description: editingTask.description,
+            ...editingTask,
             statusId: editingTask.status.id,
-            priority: editingTask.priority,
-            dueDate: editingTask.dueDate.replace('T', ' ').substring(0, 19)
+            dueDate: datePart
         };
 
         const result = await updateTask(editingTask.taskId, payload);
         if (result.success) setEditingTask(null);
     };
-
     const PRIORITY_MAP = {
         LOW: { label: 'Normalne', class: 'bg-slate-800 text-slate-400' },
         MEDIUM: { label: 'Ważne', class: 'bg-amber-500/10 text-amber-500' },
@@ -122,7 +127,7 @@ const TaskList: React.FC = () => {
                                     <input
                                         type="datetime-local"
                                         className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-white outline-none"
-                                        value={editingTask.dueDate.substring(0, 16)}
+                                        value={editingTask.dueDate ? editingTask.dueDate.replace(' ', 'T').substring(0, 16) : ''}
                                         onChange={e => setEditingTask({ ...editingTask, dueDate: e.target.value })}
                                     />
                                 </div>
