@@ -71,5 +71,26 @@ export const useTasks = () => {
     }
   }, []);
 
-  return { tasks, statuses, isLoading, error, refetch: fetchTasks, updateTask };
+  const createTask = async (newTaskData: any) => {
+    try {
+      await api.post("/tasks", newTaskData);
+      await fetchTasks();
+      return { success: true };
+    } catch (err: any) {
+      return {
+        success: false,
+        error: err.response?.data?.message || "Błąd podczas tworzenia zadania",
+      };
+    }
+  };
+
+  return {
+    tasks,
+    statuses,
+    isLoading,
+    error,
+    refetch: fetchTasks,
+    updateTask,
+    createTask,
+  };
 };
