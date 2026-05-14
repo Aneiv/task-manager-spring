@@ -19,6 +19,9 @@ public record TaskModel(
         @NotNull(message = "Status is required")
         Long statusId,
 
+        @NotNull(message = "Category is required")
+        Long categoryId,
+
         @NotBlank(message = "Priority is required")
         String priority,
 

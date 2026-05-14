@@ -1,6 +1,7 @@
 package pl.edu.pk.demo.model.entities;
 
 import jakarta.persistence.*;
+import pl.edu.pk.demo.model.CategoryModel;
 import pl.edu.pk.demo.model.Priority;
 
 import java.time.LocalDateTime;
@@ -26,6 +27,10 @@ public class Task {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "status_id", nullable = false)
     private Status status;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -58,6 +63,14 @@ public class Task {
         return this;
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public Task setCategory(Category category) {
+        this.category = category;
+        return this;
+    }
     public String getTitle() {
         return title;
     }
