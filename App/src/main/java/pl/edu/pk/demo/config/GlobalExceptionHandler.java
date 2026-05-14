@@ -37,10 +37,27 @@ public class GlobalExceptionHandler {
     //user exists error
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<?> handleUserExists(UserAlreadyExistsException ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of(
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
                 "timestamp", LocalDateTime.now(),
-                "message", "Konflikt danych",
+                "message", "Data conflict",
                 "error", ex.getMessage()
+        ));
+    }
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<?> handleRuntime(RuntimeException ex) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+                "timestamp", LocalDateTime.now(),
+                "message", "Conflict occured",
+                "error", ex.getMessage()
+                ));
+    }
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<?> handleEnumException(IllegalArgumentException ex) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of(
+                "timestamp", LocalDateTime.now(),
+                "message", "Already exists",
+                "error", ex.getMessage(),
+                "status", HttpStatus.CONFLICT.value()
         ));
     }
     //Error for existing objects

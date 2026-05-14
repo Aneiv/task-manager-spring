@@ -33,14 +33,15 @@ public class CategoryService {
         Long userId = securityService.getCurrentUserId();
         User user = userRepository.getReferenceById(userId);
 
-        Category category = new Category()
-                .setName(model.name())
-                .setUser(user);
 
         //check if category exists by name
         if (categoryRepository.existsByNameAndUserId(model.name(), userId)) {
             throw new AlreadyExistsException("Category already exists");
         }
+
+        Category category = new Category()
+                .setName(model.name())
+                .setUser(user);
 
         return categoryRepository.save(category);
     }

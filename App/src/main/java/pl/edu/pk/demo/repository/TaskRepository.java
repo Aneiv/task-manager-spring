@@ -8,6 +8,8 @@ import java.util.List;
 public interface TaskRepository extends JpaRepository<Task, Long> {
     //find all user tasks
     List<Task> findAllByUserId(Long userId);
+    //checks if exists and is owned by that user
+    boolean existsByIdAndUserId(Long id, Long userId);
 
 
 }
