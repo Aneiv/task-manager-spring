@@ -42,5 +42,22 @@ export const useTasks = () => {
     fetchTasks();
   }, [fetchTasks]);
 
-  return { tasks, isLoading, error, refetch: fetchTasks };
+  const updateTask = async (id: number, updatedData: any) => {
+    try {
+      await api.put(`/tasks/${id}`, updatedData);
+
+      await fetchTasks();
+
+      return { success: true };
+    } catch (err: any) {
+      console.error("Błąd podczas aktualizacji:", err);
+      return {
+        success: false,
+        error:
+          err.response?.data?.message || "Nie udało się zaktualizować zadania",
+      };
+    }
+  };
+
+  return { tasks, isLoading, error, refetch: fetchTasks, updateTask };
 };
