@@ -20,7 +20,7 @@ export interface TaskDTO {
   description: string;
   status: StatusDTO;
   priority: Priority;
-  category: CategoryDTO;
+  category: CategoryDTO | null;
   createdDate: string;
   dueDate: string;
   updatedDate: string;
@@ -38,7 +38,13 @@ export const useTasks = () => {
       setIsLoading(true);
       setError(null);
       const response = await api.get<TaskDTO[]>("/tasks");
-      setTasks(response.data);
+
+      const mappedTasks = response.data.map((task) => ({
+        ...task,
+        category: task.category ?? { id: 0, name: "Brak kategorii" },
+      }));
+
+      setTasks(mappedTasks);
     } catch (err: any) {
       setError(err.response?.data?.message || "Błąd podczas pobierania zadań");
     } finally {

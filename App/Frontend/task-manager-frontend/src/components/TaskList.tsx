@@ -17,7 +17,7 @@ const TaskList: React.FC = () => {
     const openAddModal = () => {
         setFormData({
             id: null, title: '', description: '',
-            statusId: 1, categoryId: 1, priority: 'LOW', dueDate: ''
+            statusId: 1, categoryId: '' as any, priority: 'LOW', dueDate: ''
         });
         setIsModalOpen(true);
     };
@@ -28,7 +28,7 @@ const TaskList: React.FC = () => {
             title: task.title,
             description: task.description,
             statusId: task.status.id,
-            categoryId: task.category.id, //
+            categoryId: task.category?.id ?? '' as any,
             priority: task.priority,
             dueDate: task.dueDate.replace(' ', 'T').substring(0, 16)
         });
@@ -41,7 +41,13 @@ const TaskList: React.FC = () => {
         let datePart = formData.dueDate.replace('T', ' ');
         if (datePart.length === 16) datePart += ":00";
 
-        const payload = { ...formData, dueDate: datePart };
+        const payload = {
+            ...formData,
+            dueDate: datePart,
+            categoryId: (formData.categoryId === 0 || !formData.categoryId)
+                ? null
+                : Number(formData.categoryId)
+        };
 
         const result = formData.id
             ? await updateTask(formData.id, payload)
@@ -86,7 +92,9 @@ const TaskList: React.FC = () => {
                 return (
                     <div key={status.id} className="flex flex-col gap-4">
                         {/* Header */}
-                        <div className="flex items-center gap-3 pb-2 border-b border-slate-800">
+                        <div className="flex items-center gap-3 pb-2 border-b"
+                            style={{ borderColor: status.color }}
+                        >
                             <div
                                 className="w-3 h-3 rounded-full shadow-[0_0_10px_rgba(0,0,0,0.5)]"
                                 style={{ backgroundColor: status.color }}
@@ -123,7 +131,7 @@ const TaskList: React.FC = () => {
 
                                                 {/* Category */}
                                                 <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-300 border border-slate-700 uppercase">
-                                                    {task.category.name}
+                                                    {task.category?.name ?? "Brak kategorii"}
                                                 </span>
                                             </div>
 
@@ -175,9 +183,15 @@ const TaskList: React.FC = () => {
                                 <label className="text-xs text-slate-400 ml-1">Kategoria</label>
                                 <select
                                     className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2 text-white outline-none focus:border-emerald-500"
-                                    value={formData.categoryId}
-                                    onChange={e => setFormData({ ...formData, categoryId: parseInt(e.target.value) })}
+                                    value={formData.categoryId || ''}
+                                    onChange={e => setFormData({
+                                        ...formData,
+                                        categoryId: e.target.value === '' ? null as any : parseInt(e.target.value) // set null if no category
+                                    })}
                                 >
+                                    {/* No category */}
+                                    <option value="">-- Brak kategorii --</option>
+
                                     {categories.map((cat) => (
                                         <option key={cat.id} value={cat.id}>
                                             {cat.name}
@@ -185,7 +199,6 @@ const TaskList: React.FC = () => {
                                     ))}
                                 </select>
                             </div>
-
                             <div className="grid grid-cols-2 gap-4">
                                 {/* Priority */}
                                 <div>
