@@ -26,3 +26,34 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+@theme {
+  --animate-fade-in-up: fade-in-up var(--fade-time, 1.5s) cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-neon-pulse: neon-glow var(--glow-time, 6s) ease-in-out infinite;
+
+  @keyframes fade-in-up {
+    0% {
+      opacity: 0;
+      transform: translateY(var(--fade-y, 15px));
+      filter: blur(var(--fade-blur, 4px));
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+  }
+
+  @keyframes neon-glow {
+    0%, 100% {
+      opacity: 0.3;
+      filter: blur(var(--glow-blur-min, 15px));
+      transform: scale(0.98);
+    }
+    50% {
+      opacity: 0.7;
+      filter: blur(var(--glow-blur-max, 10px));
+      transform: scale(1.02);
+    }
+  }
+}

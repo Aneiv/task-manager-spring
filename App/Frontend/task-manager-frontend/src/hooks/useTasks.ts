@@ -20,7 +20,7 @@ export interface TaskDTO {
   description: string;
   status: StatusDTO;
   priority: Priority;
-  category: CategoryDTO;
+  category: CategoryDTO | null;
   createdDate: string;
   dueDate: string;
   updatedDate: string;
@@ -38,7 +38,13 @@ export const useTasks = () => {
       setIsLoading(true);
       setError(null);
       const response = await api.get<TaskDTO[]>("/tasks");
-      setTasks(response.data);
+
+      const mappedTasks = response.data.map((task) => ({
+        ...task,
+        category: task.category ?? { id: 0, name: "Brak kategorii" },
+      }));
+
+      setTasks(mappedTasks);
     } catch (err: any) {
       setError(err.response?.data?.message || "Błąd podczas pobierania zadań");
     } finally {
@@ -100,6 +106,54 @@ export const useTasks = () => {
     }
   };
 
+  const createCategory = async (newCategoryData: any) => {
+    try {
+      await api.post("/categories", newCategoryData);
+      await fetchCategories();
+      return { success: true };
+    } catch (err: any) {
+      return {
+        success: false,
+        error:
+          err.response?.data?.message || "Błąd podczas tworzenia kategorii",
+      };
+    }
+  };
+
+  const deleteTask = async (id: number) => {
+    try {
+      await api.delete(`/tasks/${id}`);
+
+      await fetchTasks();
+
+      return { success: true };
+    } catch (err: any) {
+      console.error("Błąd podczas usuwania:", err);
+      return {
+        success: false,
+        error: err.response?.data?.message || "Nie udało się usunąć zadania",
+      };
+    }
+  };
+  const deleteCategory = async (id: number) => {
+    try {
+      await api.delete(`/categories/${id}`);
+
+      await fetchCategories();
+      await fetchTasks();
+
+      return { success: true };
+    } catch (err: any) {
+      console.error("Błąd podczas usuwania kategorii:", err);
+      return {
+        success: false,
+        error:
+          err.response?.data?.message ||
+          "Nie udało się usunąć kategorii. Upewnij się, czy nie jest z nią powiązane jakieś zadanie.",
+      };
+    }
+  };
+
   return {
     tasks,
     statuses,
@@ -109,5 +163,8 @@ export const useTasks = () => {
     refetch: fetchTasks,
     updateTask,
     createTask,
+    deleteTask,
+    createCategory,
+    deleteCategory,
   };
 };
