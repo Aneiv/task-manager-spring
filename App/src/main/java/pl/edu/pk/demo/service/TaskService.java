@@ -43,8 +43,11 @@ public class TaskService {
         Status status = statusRepository.findById(taskModel.statusId())
                 .orElseThrow(() -> new RuntimeException("Status not found"));
 
-        Category category = categoryRepository.findById(taskModel.categoryId())
-                        .orElseThrow(() -> new RuntimeException("Category not found"));
+        Category category = null;
+        if (taskModel.categoryId() != null) {
+            category = categoryRepository.findById(taskModel.categoryId())
+                    .orElseThrow(() -> new RuntimeException("Category not found"));
+        }
 
         Task task = new Task()
                 .setUser(user)
@@ -74,8 +77,11 @@ public class TaskService {
         Status status = statusRepository.findById(taskModel.statusId())
                 .orElseThrow(() -> new RuntimeException("Status not found"));
 
-      Category category = categoryRepository.findById(taskModel.categoryId())
-                            .orElseThrow(() -> new RuntimeException("Category not found"));
+        Category category = null;
+        if (taskModel.categoryId() != null) {
+            category = categoryRepository.findById(taskModel.categoryId())
+                    .orElseThrow(() -> new RuntimeException("Category not found"));
+        }
 
         //change data
         task.setTitle(taskModel.title());
