@@ -120,8 +120,10 @@ const TaskList: React.FC = () => {
     };
 
     if (isLoading) return <div className="text-slate-400 animate-pulse">Pobieranie zadań...</div>;
-    if (error) return <div className="text-red-400 bg-red-500/10 p-4 rounded-xl">{error}</div>;
-
+    // not found is acceptable
+    if (error && !error.toLowerCase().includes('not found')) {
+        return <div className="text-red-400 bg-red-500/10 p-4 rounded-xl">{error}</div>;
+    }
     return (
         <div className="flex flex-col gap-10"> {/* Main container */}
 
@@ -202,8 +204,8 @@ const TaskList: React.FC = () => {
                 </div>
             )}
             {/* Grouping */}
-            {statuses.map((status) => {
-                const tasksInStatus = tasks.filter(t => t.status.id === status.id);
+            {(statuses || []).map((status) => {
+                const tasksInStatus = (tasks || []).filter(t => t.status?.id === status.id);
 
                 return (
                     <div key={status.id} className="flex flex-col gap-4">
@@ -355,7 +357,7 @@ const TaskList: React.FC = () => {
                                         value={formData.statusId}
                                         onChange={e => setFormData({ ...formData, statusId: parseInt(e.target.value) })}
                                     >
-                                        {statuses.map((s) => (
+                                        {(statuses || []).map((s) => (
                                             <option key={s.id} value={s.id}>
                                                 {s.name}
                                             </option>

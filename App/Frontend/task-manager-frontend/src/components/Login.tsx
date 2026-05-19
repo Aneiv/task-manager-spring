@@ -3,9 +3,10 @@ import { login } from '../api/authService';
 
 interface LoginProps {
   onLoginSuccess: () => void;
+  onNavigateToRegister: () => void;
 }
 
-const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
+const Login: React.FC<LoginProps> = ({ onLoginSuccess, onNavigateToRegister }) => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
@@ -95,9 +96,12 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
         {/* Footer */}
         <p className="mt-8 text-center text-sm text-slate-500">
           Nie masz konta?{" "}
-          <a href="#" className="font-semibold text-indigo-400 hover:text-indigo-300 transition-colors">
+          <button
+            onClick={onNavigateToRegister}
+            className="font-semibold text-indigo-400 hover:text-indigo-300 transition-colors bg-transparent border-none cursor-pointer p-0"
+          >
             Zarejestruj się
-          </a>
+          </button>
         </p>
       </div>
     </div>
