@@ -54,6 +54,10 @@ public class Task {
     public Long getId() {
         return id;
     }
+    public Task setId(Long id){
+        this.id = id;
+        return this;
+    }
     public User getUser() {
         return user;
     }

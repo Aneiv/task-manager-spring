@@ -1,7 +1,9 @@
 package pl.edu.pk.demo.service;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.edu.pk.demo.exceptions.UserAlreadyExistsException;
@@ -9,17 +11,20 @@ import pl.edu.pk.demo.model.LoginModel;
 import pl.edu.pk.demo.model.RegisterModel;
 import pl.edu.pk.demo.model.entities.User;
 import pl.edu.pk.demo.repository.UserRepository;
+import pl.edu.pk.demo.service.events.LoginFailedEvent;
 
 @Service
 public class AuthService {
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final ApplicationEventPublisher eventPublisher;
 
-    public AuthService(UserRepository repo, AuthenticationManager authManager, BCryptPasswordEncoder passwordEncoder){
+    public AuthService(UserRepository repo, AuthenticationManager authManager, BCryptPasswordEncoder passwordEncoder, ApplicationEventPublisher eventPublisher){
         this.userRepository = repo;
         this.authenticationManager = authManager;
         this.passwordEncoder = passwordEncoder;
+        this.eventPublisher = eventPublisher;
     }
 
     /**
@@ -49,13 +54,17 @@ public class AuthService {
     }
 
     public User authenticate(LoginModel input){
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        input.username(),
-                        input.password()
-                )
-        );
-
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            input.username(),
+                            input.password()
+                    )
+            );
+        }catch (AuthenticationException e){
+            eventPublisher.publishEvent(new LoginFailedEvent(input.username(), e.getMessage()));
+            throw e;
+        }
         return userRepository.findByUsername(input.username())
                 .orElseThrow();
     }
