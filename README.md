@@ -1,16 +1,27 @@
+<div align="center">
+
 # Task-Manager
 
 Simple web application to manage tasks and deadlines
 
+</div>
+
 ### Technologies
 
+- Docker
 - Framework - Springboot
 - Database Engine - PostgreSQL
-- Frontend (soon) - Vite with React
+- Frontend - Vite with React
+- CSS framework - [Tailwind]
 
-### TODO
+### Features
 
-- [ ] User Authentication with JWT
-- [ ] Complete database with tasks and groups logic
-- [ ] Unit Tests
-- [ ] Frontend
+- User Authentication with JWT token
+- User-friendly frontend
+- Option to set priority to tasks
+- Option to create and set categories to tasks
+
+![Login panel](Screenshots/login_panel.png)
+![Main panel](Screenshots/main_panel.png)
+
+[Tailwind]: https://tailwindcss.com/
