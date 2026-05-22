@@ -6,6 +6,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.edu.pk.demo.exceptions.BadCredentialsException;
 import pl.edu.pk.demo.exceptions.UserAlreadyExistsException;
 import pl.edu.pk.demo.model.LoginModel;
 import pl.edu.pk.demo.model.RegisterModel;
@@ -63,10 +64,9 @@ public class AuthService {
             );
         }catch (AuthenticationException e){
             eventPublisher.publishEvent(new LoginFailedEvent(input.username(), e.getMessage()));
-            throw e;
         }
         return userRepository.findByUsername(input.username())
-                .orElseThrow();
+                .orElseThrow(() -> new BadCredentialsException("Incorrect user data"));
     }
 
 }
