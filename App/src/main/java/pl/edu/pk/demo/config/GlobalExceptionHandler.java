@@ -101,9 +101,12 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<?> handleBadCredentials(BadCredentialsException ex) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
-                "message", "Incorrect login or password"
-        ));
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("message", "Incorrect login or password");
+        body.put("status", HttpStatus.UNAUTHORIZED.value());
+
+        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(UnauthorizedException.class)
