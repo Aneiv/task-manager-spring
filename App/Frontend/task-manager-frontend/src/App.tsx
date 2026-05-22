@@ -77,7 +77,6 @@ function App() {
                 </div>
 
                 <div className="flex items-center gap-4">
-                  <span className="hidden sm:inline text-sm text-slate-400">Zalogowano pomyślnie</span>
                   <button
                     onClick={handleLogout}
                     className="px-4 py-2 text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-all border border-slate-700 hover:border-slate-500"
