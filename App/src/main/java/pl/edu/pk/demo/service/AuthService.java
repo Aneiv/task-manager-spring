@@ -64,6 +64,7 @@ public class AuthService {
             );
         }catch (AuthenticationException e){
             eventPublisher.publishEvent(new LoginFailedEvent(input.username(), e.getMessage()));
+            throw new BadCredentialsException("Incorrect username or password");
         }
         return userRepository.findByUsername(input.username())
                 .orElseThrow(() -> new BadCredentialsException("Incorrect user data"));
