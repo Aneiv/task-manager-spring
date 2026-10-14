@@ -23,5 +23,7 @@ Simple web application to manage tasks and deadlines
 
 ![Login panel](Screenshots/login_panel.png)
 ![Main panel](Screenshots/main_panel.png)
+![Edit categories](Screenshots/edit_categories.png)
+![Edit task](Screenshots/edit_task.png)
 
 [Tailwind]: https://tailwindcss.com/
